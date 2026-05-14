@@ -1,0 +1,17 @@
+{
+  "name": "論文アトリエ",
+  "short_name": "論文アトリエ",
+  "description": "教育思想史・教育哲学・美術教育学向けの論文執筆支援アプリ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#166d6f",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
