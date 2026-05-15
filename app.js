@@ -1,3 +1,7 @@
+if (typeof document === 'undefined') {
+  // Node.js/Vercel Serverless environment
+  // Prevent execution of browser-only code
+} else {
 const STORAGE_KEY = "paperAtelierState.v2";
 const LEGACY_STORAGE_KEY = "paperAtelierState.v1";
 const PROJECT_INDEX_KEY = "paperAtelierProjects.v1";
@@ -2060,7 +2064,7 @@ async function askAi(mode) {
   renderAiMessages();
   els.sendAiMessage.disabled = true;
   try {
-    const response = await fetch("./api/ai", {
+    const response = await fetch("/api/ai", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -2551,3 +2555,5 @@ function registerServiceWorker() {
   if (!location.protocol.startsWith("http")) return;
   navigator.serviceWorker.register("./sw.js").catch(() => {});
 }
+
+} // End of browser-only code check

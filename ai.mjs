@@ -21,7 +21,7 @@ export default async function handler(request, response) {
       "硬質で明晰な学術文体を保ち、論証構造、先行研究との差分、資料根拠、反論可能性を重視してください。",
       "ユーザーが順に入力すれば論文が完成するよう、次に書くべきこと、文章案、修正案を具体的に出してください。"
     ].join("\n");
-    const aiResponse = await fetch("https://api.openai.com/v1/responses", {
+    const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -29,8 +29,7 @@ export default async function handler(request, response) {
       },
       body: JSON.stringify({
         model: OPENAI_MODEL,
-        reasoning: { effort: "high" },
-        input: [
+        messages: [
           { role: "system", content: system },
           {
             role: "user",
@@ -68,15 +67,10 @@ export default async function handler(request, response) {
 }
 
 function extractResponseText(data) {
-  if (typeof data.output_text === "string" && data.output_text) return data.output_text;
-  const parts = [];
-  for (const item of data.output || []) {
-    for (const content of item.content || []) {
-      if (content.type === "output_text" && content.text) parts.push(content.text);
-      if (content.type === "text" && content.text) parts.push(content.text);
-    }
+  if (data.choices && data.choices[0] && data.choices[0].message) {
+    return data.choices[0].message.content;
   }
-  return parts.join("\n").trim() || "応答を取得できませんでした。";
+  return "応答を取得できませんでした。";
 }
 
 function sendJson(response, status, payload) {
